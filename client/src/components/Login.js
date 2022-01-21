@@ -20,6 +20,21 @@ class Login extends React.Component {
 
   login = e => {
     e.preventDefault();
+    // Login Flow:
+    // 1. Make an axios call to login endpoint
+    // 2. pass in our current credentials
+    axios.post(`http://localhost:5001/api/login`, this.state.credentials)
+        // 3. if request is successful, save token to localStorage.
+      .then(res => {
+        localStorage.setItem('token', res.data.token);
+        localStorage.setItem('role', res.data.role);
+        localStorage.setItem('username', res.data.username);
+        this.props.history.push('/protected');
+      })
+      // 4. if unsuccesful, console.log an error
+      .catch(err => {
+        console.error(err);
+      })
   };
 
   render() {
